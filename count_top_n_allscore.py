@@ -7,7 +7,7 @@
     Version: 1.0
     This script is used to do counting for JSON data exported from Lastline, and save it to a CSV formatted file.
     It intends to do Top-N for items shown in web/email events from Lastline.
-    This script will only show items that has score/impact greater than 70.
+    This script will show items that has score/impact greater than 0.
     
     For example:
     
@@ -82,11 +82,11 @@ except KeyError:
 
 if "score" in a[0].keys():
     for i in range(len(a)):
-        if a[i]["score"] >= 70:
+        if a[i]["score"] >= 0:
             c.append(a[i][keyvalue])
 elif "impact" in a[0].keys():
     for i in range(len(a)):
-        if a[i]["impact"] >= 70:
+        if a[i]["impact"] >= 0:
             c.append(a[i][keyvalue])
 else:
     print "X"*80

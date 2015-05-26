@@ -1,6 +1,10 @@
 This script is used to do counting for JSON data exported from Lastline, and save it to a CSV formatted file.
 It intends to do Top-N for items shown in web/email events from Lastline.
 
+There are two versions of this script:
+count_top_n.py = show items that has score/impact greater than 70.
+count_top_n_allscore.py = show items that has score/impact greater than 0.
+
 For example:
 
 $python count_event.py -i incident_c2c_infection.json -o top_c2c_src_host.txt -k "src_host" -n 10
