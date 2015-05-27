@@ -74,8 +74,8 @@ try:
     a[0][keyvalue]
 except KeyError:
     print "X"*80
-    print "[-]Error! No 'src_host' in your JSON file"
-    print "[-]Please use the correct item to count for Top N with -k paramater"
+    print "[-]Error! Wrong key value!"
+    print "[-]Please use the correct key value to count for Top N with -k paramater"
     print "[-]Exiting program......"
     print "X"*80
     sys.exit()
