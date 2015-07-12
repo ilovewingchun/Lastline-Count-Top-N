@@ -52,7 +52,7 @@ except ImportError:
 
 parser = argparse.ArgumentParser(
                                  description = "This script is used to do counting for JSON data exported from Lastline, and save it to a CSV formatted file. It intends to do Top-N for items shown in web/email events from Lastline. This script will only count items that has score/impact greater than 70.",     # text displayed on top of --help
-                                 epilog = 'PS. There are cases that email recipient has multiple values. This script will ignore that. Use it at your own risk!') # last text displayed
+                                 )
 parser.add_argument('-i','--input_file',action="store",default='events.json',dest='in_file',help='Lastline event file in JSON format')
 parser.add_argument('-o','--output_file',action="store",default='top_n.txt',dest='out_file',help='Exported Top-N list')
 parser.add_argument('-k','--key',action="store",default='src_host',dest='keyvalue',help='The key value that we are going to count for Top-N, default to "src_host"')
