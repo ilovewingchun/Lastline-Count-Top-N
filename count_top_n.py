@@ -31,7 +31,7 @@
     This script can also do counting based on certain email recpient domain names.
     For example, if customer has 4 domain names:
     
-    abc , xyz, 123, 567
+    abc,xyz,123,567
 
     To count data only for those 4 domain names, do the following:
 
@@ -66,11 +66,11 @@ out_file = arguments.out_file
 keyvalue = arguments.keyvalue
 topn = arguments.topn
 recipient_domain = arguments.recipient_domain
-
 keyvalue_upper = keyvalue.upper()
 
+# Can we open that json data?
 try:
-    data = json.load(open(in_file, 'r')) # Open our JSON file and parse it, store it into a variable called data.
+    data = json.load(open(in_file, 'r'))    # Open our JSON file and parse it, store it into a variable called data.
 except (ValueError, IOError):
     print "X"*80
     print "[-]Error! No JSON object could be decoded"
@@ -80,11 +80,11 @@ except (ValueError, IOError):
     print "X"*80
     sys.exit()
 
-a = data["data"]    # Retrieve value for key "data" inside variable data then store in a. This a is a list.
-c = []  # Creating an empty list.
+temp_list = data["data"]    # Retrieve value for key "data" inside variable data then store in temp_list. This is a list.
+temp2_list = []  # Creating an empty list.
 
 try:
-    a[0][keyvalue]
+    temp_list[0][keyvalue]
 except KeyError:
     print "X"*80
     print "[-]Error! Wrong key value!"
@@ -93,39 +93,54 @@ except KeyError:
     print "X"*80
     sys.exit()
 
-if "score" in a[0].keys() or "impact" in a[0].keys():           # Check if we can find score or impact value. Show error if we can't.
-    for i in range(len(a)):                                     # Iterating through the list.
-        if a[i]["score"] >= 70 or a[i]["impact"] >= 70:         # Only check for items that has score or impact greater or equal to 70.
-            if recipient_domain:                                # Check if we need to filter out data based on email recipient domain supplied by -r.
-                for dns in recipient_domain:                    # Iterating through recipient domain names.
-                    if dns in a[i]["recipient"]:                # Check if recipient domain names match.
-                        c.append(a[i][keyvalue])                # Append matching data into list c.
-            else:                                               # If there is no need to filter out recipient domain names, go ahead to append item to list c.
-                c.append(a[i][keyvalue])
+if "score" in temp_list[0].keys() or "impact" in temp_list[0].keys():   # Check if we can find score or impact value. Show error if we can't.
+    for i in range(len(temp_list)): # Iterating through the list.
+        if temp_list[i]["score"] >= 70 or temp_list[i]["impact"] >= 70: # Only check for items that has score or impact greater or equal to 70.
+            if recipient_domain:    # Check if we need to filter out data based on email recipient domain supplied by -r.
+                for dns in recipient_domain:    # Iterating through recipient domain names.
+                    if dns in unicode.lower(temp_list[i]["recipient"]):    # Check if recipient domain names match.
+                        temp2_list.append(temp_list[i][keyvalue])    # Append matching data into list c.
+                    else:
+                        continue
+            else:   # If there is no need to filter out recipient domain names, go ahead to append item to list c.
+                temp2_list.append(temp_list[i][keyvalue])
+        else:
+            print "\n"
+            print "X"*80
+            print "[-]Error! Your JSON data doesn't contain score or impact that greater than 70."
+            print "[-]This script only counts for items that has score or impact greater than 70."
+            print "[-]Exiting program......"
+            print "X"*80
+            print "\n"
+            sys.exit()
 else:
+    print "\n"
     print "X"*80
     print "[-]Error! There is no 'score' nor 'impact' inside JSON data"
     print "[-]Please check your JSON data followed by -i paramater"
     print "[-]Exiting program......"
     print "X"*80
+    print "\n"
     sys.exit()
 
-utf8encoded = [s.encode('utf8') for s in c]
+utf8encoded = [s.encode('utf8') for s in temp2_list]
 
-d = Counter(utf8encoded).most_common(topn)
+topn_result = Counter(utf8encoded).most_common(topn)
 
 try:
     with open(out_file, 'wb') as fo:
         writer = csv.writer(fo, dialect='excel', delimiter='\t')
         writer.writerow( ( keyvalue_upper, 'COUNT' ))
-        writer.writerows(d)
+        writer.writerows(topn_result)
     fo.close()
 except IOError:
+    print "\n"
     print "X"*80
     print "[-]Error! Permission denied: '%s'" % out_file
     print "[-]Please check if you have the write permission for destination directory or file"
     print "[-]Exiting program......"
     print "X"*80
+    print "\n"
     sys.exit()
 
 print "-"*80
