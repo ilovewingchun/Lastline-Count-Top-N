@@ -93,35 +93,69 @@ except KeyError:
     print "X"*80
     sys.exit()
 
-if "score" in temp_list[0].keys() or "impact" in temp_list[0].keys():   # Check if we can find score or impact value. Show error if we can't.
-    for i in range(len(temp_list)): # Iterating through the list.
-        if temp_list[i]["score"] >= 70 or temp_list[i]["impact"] >= 70: # Only check for items that has score or impact greater or equal to 70.
-            if recipient_domain:    # Check if we need to filter out data based on email recipient domain supplied by -r.
-                for dns in recipient_domain:    # Iterating through recipient domain names.
-                    if dns in unicode.lower(temp_list[i]["recipient"]):    # Check if recipient domain names match.
-                        temp2_list.append(temp_list[i][keyvalue])    # Append matching data into list c.
+#To do: try to combine score and impact if else statement into fewer codes
+if "score" in temp_list[0].keys():
+    for i in range(len(temp_list)):
+        if temp_list[i]["score"] >= 70:
+            if recipient_domain:
+                for dns in recipient_domain:
+                    if dns in unicode.lower(temp_list[i]["recipient"]):
+                        temp2_list.append(temp_list[i][keyvalue])
                     else:
                         continue
-            else:   # If there is no need to filter out recipient domain names, go ahead to append item to list c.
+            else:
                 temp2_list.append(temp_list[i][keyvalue])
-        else:
-            print "\n"
-            print "X"*80
-            print "[-]Error! Your JSON data doesn't contain score or impact that greater than 70."
-            print "[-]This script only counts for items that has score or impact greater than 70."
-            print "[-]Exiting program......"
-            print "X"*80
-            print "\n"
-            sys.exit()
+elif "impact" in temp_list[0].keys():
+    for i in range(len(temp_list)):
+        if temp_list[i]["impact"] >= 70:
+            if recipient_domain:
+                for dns in recipient_domain:
+                    if dns in unicode.lower(temp_list[i]["recipient"]):
+                        temp2_list.append(temp_list[i][keyvalue])
+                    else:
+                        continue
+            else:
+                temp2_list.append(temp_list[i][keyvalue])
 else:
-    print "\n"
     print "X"*80
     print "[-]Error! There is no 'score' nor 'impact' inside JSON data"
     print "[-]Please check your JSON data followed by -i paramater"
     print "[-]Exiting program......"
     print "X"*80
-    print "\n"
     sys.exit()
+
+
+#New version code but not working well :(
+#if "score" in temp_list[0].keys() or "impact" in temp_list[0].keys():   # Check if we can find score or impact value. Show error if we can't.
+#    for i in range(len(temp_list)): # Iterating through the list.
+#        if temp_list[i]["score"] >= 70 or temp_list[i]["impact"] >= 70: # Only check for items that has score or impact greater or equal to 70.
+#            if recipient_domain:    # Check if we need to filter out data based on email recipient domain supplied by -r.
+#                for dns in recipient_domain:    # Iterating through recipient domain names.
+#                    if dns in unicode.lower(temp_list[i]["recipient"]):    # Check if recipient domain names match.
+#                        temp2_list.append(temp_list[i][keyvalue])    # Append matching data into list c.
+#                    else:
+#                        continue
+#            else:   # If there is no need to filter out recipient domain names, go ahead to append item to list c.
+#                temp2_list.append(temp_list[i][keyvalue])
+#        else:
+#            print "\n"
+#            print "X"*80
+#            print "[-]Error! Your JSON data doesn't contain score or impact that greater than 70."
+#            print "[-]This script only counts for items that has score or impact greater than 70."
+#            print "[-]Exiting program......"
+#            print "X"*80
+#            print "\n"
+#            sys.exit()
+#
+#else:
+#    print "\n"
+#    print "X"*80
+#    print "[-]Error! There is no 'score' nor 'impact' inside JSON data"
+#    print "[-]Please check your JSON data followed by -i paramater"
+#    print "[-]Exiting program......"
+#    print "X"*80
+#    print "\n"
+#    sys.exit()
 
 utf8encoded = [s.encode('utf8') for s in temp2_list]
 
