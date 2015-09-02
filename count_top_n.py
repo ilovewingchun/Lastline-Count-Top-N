@@ -116,6 +116,17 @@ elif "impact" in temp_list[0].keys():
                         continue
             else:
                 temp2_list.append(temp_list[i][keyvalue])
+elif "max_impact" in temp_list[0].keys():
+    for i in range(len(temp_list)):
+        if temp_list[i]["max_impact"] >= 70:
+            if recipient_domain:
+                for dns in recipient_domain:
+                    if dns in unicode.lower(temp_list[i]["recipient"]):
+                        temp2_list.append(temp_list[i][keyvalue])
+                    else:
+                        continue
+            else:
+                temp2_list.append(temp_list[i][keyvalue])
 else:
     print "X"*80
     print "[-]Error! There is no 'score' nor 'impact' inside JSON data"
