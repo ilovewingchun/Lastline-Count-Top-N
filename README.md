@@ -23,7 +23,6 @@ Use M$ excel to open that Top-N txt file, copy paste to what ever application yo
 This script can also do counting based on certain email recpient domain names.</p>
 For example, if customer has 4 domain names:</p>
 abc,xyz,123,567</p>
-To count data only for those 4 domain names, do the following:</p>
-<code><pre>
-$python count_top_n.py -i emails.json -o top10_sender.txt -k "recipient" -n 10 -r abc -r xyz -r 123 -r 567
+To count data only for those 4 domain names, do the following:
+<code><pre>$python count_top_n.py -i emails.json -o top10_sender.txt -k "recipient" -n 10 -r abc -r xyz -r 123 -r 567
 </code></pre>
