@@ -67,6 +67,7 @@ keyvalue = arguments.keyvalue
 topn = arguments.topn
 recipient_domain = arguments.recipient_domain
 keyvalue_upper = keyvalue.upper()
+sslverify = True # Set to False if you have SSL certifiation problems
 
 # Can we open that json data?
 try:
